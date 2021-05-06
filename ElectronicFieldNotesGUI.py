@@ -660,8 +660,6 @@ Note: The FlowTracker2 date and time is stored as UTC along with an offset for l
         self.form2_1.SetSizerAndFit(form2_1Sizer)
 
 
-
-
         #Moving Boat Page
         form3Sizer = wx.BoxSizer(wx.VERTICAL)
         self.form3 = SpecialScrolledPanel(self.layout, style=wx.SIMPLE_BORDER)
@@ -693,8 +691,6 @@ Note: The FlowTracker2 date and time is stored as UTC along with an offset for l
         form5Sizer.Add(self.frChecklist, 1, wx.EXPAND)
         self.form5.SetSizerAndFit(form5Sizer)
 
-
-
         #Imported Midsection page
         # self.form6Sizer = wx.BoxSizer(wx.VERTICAL)
         # self.form6 = SpecialScrolledPanel(self.layout, style=wx.SIMPLE_BORDER)
@@ -725,7 +721,6 @@ Note: The FlowTracker2 date and time is stored as UTC along with an offset for l
         self.Update()
         self.Refresh()
         self.Layout()
-
 
         self.genInfo.stnNumCmbo.Bind(wx.EVT_TEXT, self.OnStationSelect)
         self.genInfo.stnNumCmbo.Bind(wx.EVT_COMBOBOX, self.OnStationHasBeenSelected)
@@ -764,6 +759,7 @@ Note: The FlowTracker2 date and time is stored as UTC along with an offset for l
             os.makedirs(folder)
         self.manager.ExportAsXML(name, msg)
         # print "Save to AutoSave.xml"
+        print "test for pull request"
 
 
     def OnAQUARIUSDataExtractionToolFrame(self, event):
