@@ -49,6 +49,7 @@ import qrcode
 import zipfile
 import shutil
 from win32api import GetSystemMetrics
+from AttachmentPanel import *
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
@@ -660,6 +661,8 @@ Note: The FlowTracker2 date and time is stored as UTC along with an offset for l
         self.form2_1.SetSizerAndFit(form2_1Sizer)
 
 
+
+
         #Moving Boat Page
         form3Sizer = wx.BoxSizer(wx.VERTICAL)
         self.form3 = SpecialScrolledPanel(self.layout, style=wx.SIMPLE_BORDER)
@@ -691,6 +694,16 @@ Note: The FlowTracker2 date and time is stored as UTC along with an offset for l
         form5Sizer.Add(self.frChecklist, 1, wx.EXPAND)
         self.form5.SetSizerAndFit(form5Sizer)
 
+        # Attachment Page Added
+        form6Sizer = wx.BoxSizer(wx.VERTICAL)
+        self.form6 = SpecialScrolledPanel(self.layout, style=wx.SIMPLE_BORDER)
+        self.form6.SetupScrolling()
+        self.attachment = AttachmentPanel(self, self.mode, self.lang, self.form6, size=(920, -1))
+        form6Sizer.Add(self.attachment, 1, wx.EXPAND)
+        self.form6.SetSizerAndFit(form6Sizer)
+        self.form6.SetSizerAndFit(form6Sizer)
+        # Attachment Page Added
+
         #Imported Midsection page
         # self.form6Sizer = wx.BoxSizer(wx.VERTICAL)
         # self.form6 = SpecialScrolledPanel(self.layout, style=wx.SIMPLE_BORDER)
@@ -711,6 +724,9 @@ Note: The FlowTracker2 date and time is stored as UTC along with an offset for l
         self.layout.AddPage(self.form3, "Moving Boat")
         self.layout.AddPage(self.form4, "Mid-Section")
         self.layout.AddPage(self.form5, "Field Review")
+        # Attachment Page Added
+        self.layout.AddPage(self.form6, "Attachment")
+
         # self.layout.AddPage(self.form6, "Imported Mid-Section")
         # self.layout.AddPage(form6, "User Config")
         self.layout.Show(True)
@@ -721,6 +737,7 @@ Note: The FlowTracker2 date and time is stored as UTC along with an offset for l
         self.Update()
         self.Refresh()
         self.Layout()
+
 
         self.genInfo.stnNumCmbo.Bind(wx.EVT_TEXT, self.OnStationSelect)
         self.genInfo.stnNumCmbo.Bind(wx.EVT_COMBOBOX, self.OnStationHasBeenSelected)
@@ -759,7 +776,6 @@ Note: The FlowTracker2 date and time is stored as UTC along with an offset for l
             os.makedirs(folder)
         self.manager.ExportAsXML(name, msg)
         # print "Save to AutoSave.xml"
-        print "test for pull request"
 
 
     def OnAQUARIUSDataExtractionToolFrame(self, event):
@@ -1483,7 +1499,7 @@ Note: The FlowTracker2 date and time is stored as UTC along with an offset for l
                 self.path = path
                 self.LoadDefaultConfig()
                 self.manager.OpenFile(path)
-		self.instrDep.RefreshDeploymentMethod()
+                self.instrDep.RefreshDeploymentMethod()
 
                 # After loading XML, If lock was checked, lock everything
                 #if self.titleHeader.enteredInHWSCB.GetValue():
@@ -1567,17 +1583,20 @@ Note: The FlowTracker2 date and time is stored as UTC along with an offset for l
             self.aquariusUploadDialog.passwordCtrl.SetValue(self.savedPassword)
             self.aquariusUploadDialog.serverCmbo.SetValue(self.savedServer)
 
-
+            # no longer need since already have zipping function
             # Set name of changeCtrl in upload dialog.
-            if self.name=='':
-                date = datetime.datetime.strptime(str(self.manager.genInfoManager.datePicker), self.manager.DT_FORMAT)
-                date = date.strftime("%Y%m%d")
-                defaultName = str(self.manager.genInfoManager.stnNumCmbo) + "_" + str(date) + "_FV.pdf"
-                self.aquariusUploadDialog.changeCtrl.SetValue(self.uploadSaveDir +"\\" + defaultName)
-            else:
-                print "self.uploadsaveDir", self.uploadSaveDir
-                print "self.name", self.name
-                self.aquariusUploadDialog.changeCtrl.SetValue(self.uploadSaveDir + "\\" + self.name.replace("xml", "pdf"))
+            #if self.name == '':
+            #    date = datetime.datetime.strptime(str(self.manager.genInfoManager.datePicker), self.manager.DT_FORMAT)
+            #    date = date.strftime("%Y%m%d")
+            #    defaultName = str(self.manager.genInfoManager.stnNumCmbo) + "_" + str(date) + "_FV.pdf"
+                #self.aquariusUploadDialog.changeCtrl.SetValue(self.uploadSaveDir + "\\" + defaultName)
+            #else:
+            #    print "self.uploadsaveDir", self.uploadSaveDir
+            #    print "self.name", self.name
+                #self.aquariusUploadDialog.changeCtrl.SetValue(
+                #    self.uploadSaveDir + "\\" + self.name.replace("xml", "pdf"))
+
+            self.aquariusUploadDialog.zipCtrl.SetValue(self.attachment.zipAddr.GetValue())
 
             show_dialog = True
             show_error = False
